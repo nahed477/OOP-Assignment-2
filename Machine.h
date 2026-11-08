@@ -15,7 +15,7 @@ private:
 public:
     Machine();
 
-    void loadProgram(const std::string& filePath, uint8_t startAddress);
+    bool loadProgram(const std::string& filePath, uint8_t startAddress);
     void run();
     void step();
     void reset();

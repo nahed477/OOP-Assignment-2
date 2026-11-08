@@ -140,7 +140,7 @@ void Machine::startUI() {
             case 1:
                 cout << "Enter program filename: ";
                 cin >> filename;
-                cout << "Enter start address in hex (e.g., 00, 02): ";
+                cout << "Enter start address in hex (e.g.,35A7): ";
                 cin >> hex >> startAddr;
                 cin >> dec; 
                 if (loadProgram(filename, static_cast<uint8_t>(startAddr))) {

@@ -2,7 +2,7 @@
 #define MACHINE_H
 
 #include <string>
-#include "CPU.h"
+#include "CPU2.h"
 #include "Memory.h"
 #include "Screen.h"
 

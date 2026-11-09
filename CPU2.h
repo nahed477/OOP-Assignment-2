@@ -5,20 +5,22 @@
 #include "Memory.h"
 #include "ALU.h"
 
-class CPU{
+class CPU {
 private:
-instruction rawinst;
-registerfile order;
-Memory memory;
-ALU alu;
-int operand;
-int pc;
-bool running;
+    instruction rawinst;
+    registerfile order;
+    Memory& memory; 
+    ALU alu;
+    int pc;
+    bool running;
+
 public:
-CPU();
-CPU(int rawin);
-int fetch(int address);
-void execute(int opecode);
-void run();
+    CPU(Memory& mem); 
+    bool isHalted() const;
+    void step();
+    void reset();
+    int fetch(int address);
+    void execute(int opcode);
+    void run();
 };
 #endif

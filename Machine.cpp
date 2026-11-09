@@ -97,6 +97,10 @@ void Machine::run() {
         step();
     }
     cout << "\nProgram execution halted successfully.\n";
+    
+    cout << "--- Screen Output Start ---\n";
+    screen.render();
+    cout << "\n--- Screen Output End ---\n";
 }
 
 void Machine::step() {
@@ -155,20 +159,29 @@ void Machine::startUI() {
                 run();
                 break;
                 
+           
             case 3:
                 if (!cpu.isHalted()) {
-                    
-                    cin.ignore(numeric_limits<streamsize>::max(), '\n'); 
-                    
-                    step();
-                    cout << "Step executed. Press Enter for next step...";
-                    cin.get();
+                cout << "\n--- Starting Step-by-Step Execution (Press Enter for each step, type 'q' then Enter to exit to menu) ---" << endl;
+                cin.ignore(numeric_limits<streamsize>::max(), '\n'); 
+                while (!cpu.isHalted()) {
+                step(); 
+                cout << "[OK] Instruction executed. Press Enter for next step...";
+            
+                char ch = cin.get();
+                if (ch == 'q' || ch == 'Q') {
+                     break; 
                 }
-                else {
-                    cout << "Program is already halted. Please reset or load a new program." << endl;
+             }
+                if (cpu.isHalted()) {
+                    cout << "\nProgram has halted completely." << endl;
                 }
-                break;
-                
+            }
+            else {
+                cout << "Program is already halted. Please reset or load a new program." << endl;
+            }
+            break;
+
             case 4:
                 reset();
                 cout << "Machine has been reset successfully." << endl;

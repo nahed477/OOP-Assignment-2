@@ -1,7 +1,7 @@
 #ifndef CPU_H
 #define CPU_H
-#include "Registers.h"
-#include "Instruction.h"
+#include "Registers2.h"
+#include "Instructions2.h"
 #include "Memory.h"
 #include "ALU.h"
 

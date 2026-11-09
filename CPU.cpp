@@ -17,12 +17,19 @@ bool CPU::isHalted() const {
 }
 
 int CPU::fetch(int address) { 
-    int instructionvalue = memory.read(address);
-    return instructionvalue;
+    
+    int highByte = memory.read(address);
+    int lowByte = memory.read(address + 1);
+    return (highByte << 8) | lowByte;
 }
 
 void CPU::execute(int opcode) {
-    int op = opcode;
+    
+    int op = (opcode >> 12) & 0xF;
+    
+
+    rawinst = instruction(opcode);
+
     switch (op) {
         case 1: {
            int reg1 = rawinst.getr();
@@ -91,9 +98,29 @@ void CPU::execute(int opcode) {
            order.set(reg9, result5);
            break;
         }
-        case 10: // A
-        case 11: // B
-        case 12: // C
+        case 0xA: 
+        {
+           int reg10 = rawinst.getr();
+           int steps = rawinst.getvalue();
+           int currentvalue = order.get(reg10);
+           int result6 = alu.rotateRight(currentvalue, steps);
+           order.set(reg10, result6);
+           break;
+        }
+        case 0xB: 
+        {
+           int reg11 = rawinst.getr();
+           int locationb = rawinst.getAddressOrValue();
+           if(order.get(reg11) == order.get(0)){
+               pc = locationb;
+           }
+           break;
+        }
+        case 0xC: 
+        {
+           running = false;
+           break;
+        }
         default:
            break;
     }
@@ -104,7 +131,7 @@ void CPU::step() {
     int instructioncode = fetch(currentpc);
     execute(instructioncode);
     if (pc == currentpc) {
-        pc += 2;
+        pc += 2; 
     }
 }
 

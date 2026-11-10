@@ -44,12 +44,12 @@ void CPU::execute(int opcode) {
            order.set(reg2, value2);
            break;
         }
-        case 3: {
-           int reg3 = rawinst.getr();
-           int location3 = rawinst.getaddress();
-           int value3 = order.get(reg3);
-           memory.write(location3, value3);
-           break;
+       case 3: {
+            int reg3 = rawinst.getr();
+            int location3 = (rawinst.getaddress() << 4) | rawinst.getvalue();
+            int value3 = order.get(reg3);
+            memory.write(location3, value3);
+            break;
         }
         case 4: {
            int reg4 = rawinst.getr();
@@ -107,14 +107,15 @@ void CPU::execute(int opcode) {
            order.set(reg10, result6);
            break;
         }
-        case 0xB: 
-        {
-           int reg11 = rawinst.getr();
-           int locationb = rawinst.getAddressOrValue();
-           if(order.get(reg11) == order.get(0)){
-               pc = locationb;
-           }
-           break;
+      case 0xB: {
+            int reg11 = rawinst.getr();
+            
+            int targetaddress = (rawinst.getaddress() << 4) | rawinst.getvalue();
+            
+            if (order.get(reg11) == order.get(0)) {
+                pc = targetaddress;
+            }
+            break;
         }
         case 0xC: 
         {

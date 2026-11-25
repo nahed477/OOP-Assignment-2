@@ -13,8 +13,14 @@ void Screen::clear(){
 }
 
 void Screen::render() {
-    for (uint8_t ch : buffer_) {
-        cout << hex << uppercase << setfill('0') << setw(2) << static_cast<int>(ch) << " ";
+    if(buffer_.empty()){
+        cout<<"No Output";
+    } else{
+        for(uint8_t ch : buffer_){
+            cout<<hex<<uppercase <<setfill('0')<<setw(2)<<static_cast<int>(ch)<<" ";
+        }
+        cout<<dec;
+
     }
-    cout << dec;  
+    buffer_.clear();
 }

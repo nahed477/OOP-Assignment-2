@@ -142,6 +142,7 @@ void Machine::startUI() {
 
         switch (choice) {
             case 1:
+            reset();
                 cout << "Enter program filename: ";
                 cin >> filename;
                 cout << "Enter start address in hex (e.g.,35A7): ";
@@ -161,27 +162,29 @@ void Machine::startUI() {
                 
            
             case 3:
-                if (!cpu.isHalted()) {
-                cout << "\n--- Starting Step-by-Step Execution (Press Enter for each step, type 'q' then Enter to exit to menu) ---" << endl;
-                cin.ignore(numeric_limits<streamsize>::max(), '\n'); 
-                while (!cpu.isHalted()) {
-                step(); 
-                cout << "[OK] Instruction executed. Press Enter for next step...";
-            
-                char ch = cin.get();
-                if (ch == 'q' || ch == 'Q') {
-                     break; 
-                }
-             }
-                if (cpu.isHalted()) {
-                    cout << "\nProgram has halted completely." << endl;
-                }
-            }
-            else {
-                cout << "Program is already halted. Please reset or load a new program." << endl;
-            }
-            break;
+    if (!cpu.isHalted()) {
+        cout << "\n--- Starting Step-by-Step Execution ---" << endl;
+        cin.ignore(numeric_limits<streamsize>::max(), '\n');
+        while (!cpu.isHalted()) {
+            step();
+            cout << "[Step Executed] Press Enter for next step (or type 'q' and Enter to exit)..." << endl;
 
+            char ch = cin.get();
+            if (ch == 'q' || ch == 'Q') {
+                break;
+            }
+        }
+        if (cpu.isHalted()) {
+            cout << "\nProgram has halted completely." << endl;
+            cout << "--- Screen Output Start ---\n";
+            screen.render();
+            cout << "\n--- Screen Output End ---\n";
+        }
+    } else {
+        cout << "Program is already halted. Please reset or load a new program." << endl;
+    }
+    break;
+ 
             case 4:
                 reset();
                 cout << "Machine has been reset successfully." << endl;
